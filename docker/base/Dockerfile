@@ -3,7 +3,7 @@ LABEL author="Nathaniel Vala" email="nathanielvala@hotmail.com"
 LABEL version="0.2"
 
 ENV DAEMON_RUN=true
-ENV SPARK_VERSION=2.4.3
+ENV SPARK_VERSION=2.4.5
 ENV HADOOP_VERSION=2.7
 ENV SCALA_VERSION=2.12.4
 ENV SCALA_HOME=/usr/share/scala
@@ -42,6 +42,9 @@ RUN cd "/tmp" && \
 RUN apt-get install -y python3 python3-pip python3-numpy python3-matplotlib python3-scipy python3-pandas python3-simpy
 RUN update-alternatives --install "/usr/bin/python" "python" "$(which python3)" 1
 
+# Add R
+RUN apt-get install -y r-base
+RUN R -e 'install.packages(c("forecast"), repos = "https://cloud.r-project.org")'
 
 #Scala instalation
 RUN export PATH="/usr/local/sbt/bin:$PATH" &&  apt update && apt install ca-certificates wget tar && mkdir -p "/usr/local/sbt" && wget -qO - --no-check-certificate "https://github.com/sbt/sbt/releases/download/v1.2.8/sbt-1.2.8.tgz" | tar xz -C /usr/local/sbt --strip-components=1 && sbt sbtVersion
